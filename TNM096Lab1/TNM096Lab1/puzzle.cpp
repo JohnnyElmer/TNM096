@@ -23,9 +23,9 @@ struct Node
 {
 	//The current state of the puzzle board.
 	int board[3][3]{
-		{ 8, 7, 6 },
-		{ 0, 3, 4 },
-		{ 5, 1, 2 }
+		{ 6, 4, 7 },
+		{ 8, 5, 0 },
+		{ 3, 2, 1 }
 	};
 
 	//Heuristics and cost
@@ -62,7 +62,7 @@ struct Compare_Cost {
 };
 
 //Checks if a nodes state matches the goal state.
-bool Is_coal(Node const& n) {
+bool IsGoal(Node const& n) {
 	for (int i = 0; i < 3; i++) {
 		for (int j = 0; j < 3; j++) {
 			if (n.board[i][j] != goal[i][j])
@@ -173,7 +173,6 @@ string A_Star(Node start) {
 
 	//Instantiate the closed list
 	set<string> closed_list;
-	//closed_list.emplace(open_list.top().board);
 
 	while (!open_list.empty()) {
 		//Retrieve the first node in the queue
@@ -181,7 +180,7 @@ string A_Star(Node start) {
 		open_list.pop();
 		closed_list.emplace(first.makeString()); //the node has been visited
 
-		if (Is_coal(first)) {
+		if (IsGoal(first)) {
 			return first._movement;
 		}
 		else {
@@ -195,8 +194,6 @@ string A_Star(Node start) {
 				Compute_Cost(s);
 				open_list.push(s);
 			}
-
-
 		}
 	}
 
