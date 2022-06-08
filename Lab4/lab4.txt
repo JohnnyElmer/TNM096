@@ -1,0 +1,128 @@
+//How we understand it SHOULD end up being in the end
+at(Shakey,Room3)
+at(Switch1,Room1) //All switches high height, shakey low
+at(Switch2,Room2)
+at(Switch3,Room3)
+at(Switch4,Room4)
+at(Box1,Room1)
+at(Box2,Room1)
+at(Box3,Room1)
+at(Box4,Room1)
+
+go(Shakey, Corridor)
+go(Shakey, Room1)
+go(Shakey, Box2)
+
+push(Box2, Room1, Corridor) 
+
+go(Shakey, Room1)
+go(Shakey, Box1)
+
+push(Box1, Room1, Switch1) 
+
+climbUp(Box1)
+turnOff(Switch1)
+climbDown(Box1)
+
+go(Shakey, Corridor)
+go(Shakey, Box2)
+push(Box2, Corridor, Room2)
+
+//Describe in STRIPS notation the different actions
+go(x,y):
+Precond: At(Shakey,x) 
+Effect: At(Shakey,y)
+
+Push(b,x,y):
+Precond: At(Shakey,x) AND At(b,x)   
+Effect: At(Shakey,y) AND At(b,y) AND NOT  At(Shakey,x) AND NOT At(b,x)
+
+ClimpUp(b):
+Precond: At(Shakey, x) + Height(Shakey,low) AND At(b,x)
+Effect:  At(Shakey, x) + Height(Shakey,high) AND At(b,x) AND NOT Height(Shakey,low)
+
+ClimbDown(b):
+Precond: At(Shakey, x) + Height(Shakey,high) AND At(b,x) 
+Effect:  At(Shakey, x) + Height(Shakey,low) AND At(b,x) AND NOT Height(Shakey,high)
+
+turnOn(s):
+Precond: At(Shakey, s) + Height(Shakey,high) AND Light(s, off)
+Effect: At(Shakey, s) + Height(Shakey,high) AND Light(s, on) AND NOT Light(s, off)
+
+turnOff(s):
+Precond: At(Shakey, s) + Height(Shakey,high) AND Light(s, on)
+Effect: At(Shakey, s) + Height(Shakey,high) AND Light(s, off) AND NOT Light(s, on)
+
+
+
+
+
+(-A V C) -> -R & 
+(A V C) -> R &
+(A V B) -> R &
+A -> R &
+(-A V B V -C) -> -R & 
+(A V B V C) -> R & 
+(-A V B V C) -> -R
+
+Consult strips.pl -> Consult your own code -> Write plan. in console, run with enter
+
+
+
+
+%Lab 4 Task A results
+
+STRIPS:
+1:
+--- One Plan ---
+go(room_3,switch_3)
+go(switch_3,room_3)
+go(room_3,corridor)
+go(corridor,switch_1)
+go(switch_1,room_1)
+-----------------
+2:
+Does not want to finish, just keeps using "go"
+3:
+Does not want to finish, just keeps using "go"
+
+IDSTRIPS:
+1:
+----- A Plan (length 2)
+go(room_3,corridor)
+go(corridor,room_1)
+-------------------------
+2:
+----- A Plan (length 5)
+go(room_3,corridor)
+go(corridor,room_1)
+push(box_1,room_1,switch_1)
+climb_up(box_1)
+turn_off(switch_1)
+-------------------------
+3:
+----- A Plan (length 4)
+go(room_3,corridor)
+go(corridor,room_1)
+push(box_2,room_1,corridor)
+push(box_2,corridor,room_2)
+-------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
